@@ -6,7 +6,6 @@ public class ManageEmployee {
 	public static int employeeNo = 0;
 	public static Employee[] employees;
 	public static boolean isEndProgram = false;
-	public static String nameSearch="";
 	public static void main(String[] args) {
 		showMenu();
 		System.out.println("The program end!!!");
@@ -43,11 +42,19 @@ public class ManageEmployee {
 			case 3:
 				break;
 			case 4:
-				searchEmployeeByName();
+				System.out.println("Please input name to search : ");
+				String nameInput = scanner.next();
+				Employee employee = searchByName(nameInput);
+				System.out.println("-----Thong tin tim kiem --------");
+				System.out.println(employee.getId() + " " + employee.getName() + " " + employee.getSalary());
 				askForContinue();
 				break;
 			case 5:
-				updateEmployee();
+				System.out.println("Please input name to update : ");
+				String nameInputUpdate = scanner.next();
+				System.out.println("Please input new salary : ");
+				double newSalary = scanner.nextDouble();
+				updateEmployeeByName(nameInputUpdate, newSalary);
 				askForContinue();
 				break;
 			default:
@@ -66,7 +73,7 @@ public class ManageEmployee {
 		for (int i = 0; i < employeeNo; i++) {
 			System.out.println("Please input the information of employee[" + (i+1) + "] : ");
 			System.out.println("Name : ");
-			String name = scanner.nextLine();
+			String name = scanner.next();
 			System.out.println("Salary : ");
 			double salary = scanner.nextDouble();
 			System.out.println("Age : ");
@@ -82,24 +89,16 @@ public class ManageEmployee {
 		System.out.println("----------------List of employee-----------");
 		System.out.println("ID  Name                    Salary     Job name");
 		for (int i = 0; i < employees.length; i++) {
-			System.out.println(employees[i].id + " " + employees[i].name + "       " + employees[i].salary + " " + employees[i].job.name);
+			System.out.println(employees[i].getId() + " " + employees[i].getName() + "       " + employees[i].getSalary() + " " + employees[i].getJob().getName());
 		}
 	}
 	
 	public static void askForContinue() {
-		System.out.println("Do you want to continue? (Press 3 to end proram, 0 to come back menu, 4 to search employee, 5 to update) : ");
+		System.out.println("Do you want to continue? (Press 3 to end proram, 0 to come back menu) : ");
 		int inputNo = scanner.nextInt();
 		switch (inputNo) {
 		case 0:
 			showMenu();
-			break;
-		case 4:
-			searchEmployeeByName();
-			askForContinue();
-			break;
-		case 5:
-			updateEmployee();
-			askForContinue();
 			break;
 		case 3:
 			isEndProgram = true;
@@ -108,26 +107,21 @@ public class ManageEmployee {
 			break;
 		}
 	}
-	public static void searchEmployeeByName() {
-		System.out.println("Please enter the name to search");
-		String nameSearch = scanner.nextLine();
-		int j = 0;
-		for (int i = 0; i < employees.length; i++)
-		{	if (employees[i].name.contentEquals(nameSearch))
-			{	j++;
-				System.out.println(employees[i].id + " " + employees[i].name + "       " + employees[i].salary + " " + employees[i].job.name);
+	public static Employee searchByName(String nameInput) {
+		Employee employee = null;
+		for (int i = 0; i< employees.length; i++) {
+			if (nameInput.equals(employees[i].getName())) {
+				employee = employees[i];
+				break;
 			}
 		}
-		if (j==0)
-		{	System.out.println("Could not find an employee named " + nameSearch);
-		}
+		return employee;
 	}
-	public static void updateEmployee() {
-		System.out.println("Enter new salary : ");
-		int newSalary = scanner.nextInt();
-		for (int i = 0; i < employees.length; i++)
-		{	if (employees[i].name.contentEquals(nameSearch))
-			{	employees[i].salary = 	newSalary;
+	public static void updateEmployeeByName(String nameInput, Double newSalary) {
+		for (int i = 0; i< employees.length; i++) {
+			if (nameInput.equals(employees[i].getName())) {
+				employees[i].getSalary() = newSalary;
+				break;
 			}
 		}
 	}
