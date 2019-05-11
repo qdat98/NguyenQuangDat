@@ -1,20 +1,21 @@
 package Employee;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Set;
+
 public class ManageEmployee1 implements Employee1{
 	public static Scanner scanner = new Scanner(System.in);
 	public static int inputNumber = 0;
 	public static int employeeNo = 0;
-	public static Set<Employee> employees = new HashSet<Employee>();
+	public static ArrayList<Employee> employees = new ArrayList<Employee>();
 	public static boolean isEndProgram = false;
-	Iterator<Employee> employee = employees.iterator();
+	Iterator<Employee> e = employees.iterator();
 	
 	public static void main(String[] args) {
 	showMenu();
 	System.out.println("The program end!!!");
 	}
+	
 	//showMenu
 	public static void showMenu() {
 	ManageEmployee1 employee1 = new ManageEmployee1();
@@ -50,9 +51,8 @@ public class ManageEmployee1 implements Employee1{
 		case 4:
 			System.out.println("Please input name to search : ");
 			String nameInput = scanner.next();
-			Employee employee = employee1.searchByName(nameInput);
 			System.out.println("-----Thong tin tim kiem --------");
-			System.out.println(employee.getId() + " " + employee.getName() + " " + employee.getSalary());
+			employee1.searchByName(nameInput);
 			askForContinue();
 			break;
 		case 5:
@@ -85,39 +85,38 @@ public class ManageEmployee1 implements Employee1{
 		employees.add(employee4);
 		employees.add(employee5);	
 }
+	
 	//showEmployee
 	@Override
 	public void showEmployee() {
 	System.out.println("----------------List of employee-----------");
 	System.out.println("ID  Name                Age  Salary      Job name");
-	while (employee.hasNext()) {
-		employee.next().print();
+	while (e.hasNext()) {
+		e.next().print();
 	}
 }
+	
 	//searchByName
 	@Override
-	public Employee searchByName(String nameInput) {
-	// TODO Auto-generated method stub
-		Employee employeess = null;
-		while (employee.hasNext()) {
-		if (nameInput.equals(((Employee) employees).getName())) {
-			employeess = ((Employee) employees);
-			break;
+	public void searchByName(String nameInput) {
+		for (int i = 0; i < employees.size(); i++) {
+			if(nameInput.equals(employees.get(i).getName())) {
+				employees.get(i).print();
+				break;
+			}
 		}
-	}
-	return employeess;
 }
+	
 	//updateEmployeeByName
 	@Override
 	public void updateEmployeeByName(String nameInput, Double newSalary) {
-	// TODO Auto-generated method stub	
-	for (int i = 0; i< employees.size(); i++) {
-		if (nameInput.equals(((Employee) employees).getName())) {
-			((Employee) employees).setSalary(newSalary);
-			break;
+		for (int i = 0; i < employees.size(); i++) {
+		if (nameInput.equals(employees.get(i).getName())) {
+			employees.get(i).setSalary(newSalary);
 		}
 	}
 }
+	
 	//askForContinue
 	public static void askForContinue() {
 	System.out.println("Do you want to continue? (Press 3 to end proram, 0 to come back menu) : ");
